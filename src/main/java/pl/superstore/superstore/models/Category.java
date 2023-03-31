@@ -2,6 +2,7 @@ package pl.superstore.superstore.models;
 
 import java.util.EnumSet;
 
+
 public enum Category
 {
     SHAMPOOS("Szampony"),
