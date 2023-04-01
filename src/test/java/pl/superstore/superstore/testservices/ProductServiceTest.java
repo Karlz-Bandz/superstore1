@@ -28,18 +28,39 @@ public class ProductServiceTest
     @Autowired
     private ProductRepo productRepo;
 
+    /**
+     * This method creates a fake database for the testing purpose
+     */
     @BeforeAll
     void setup() {
         List<Product> products = Arrays.asList(
-                new Product(1,"Test1", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
-                new Product(2,"Test2", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
-                new Product(3,"Test3", "DescriptionTest",Category.SETS, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
-                new Product(4,"Test4", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
-                new Product(5,"Test5", "DescriptionTest",Category.SHAMPOOS, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
-                new Product(6,"Test6", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
-                new Product(7,"Test7", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg")
+                new Product("Test1", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
+                new Product("Test2", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
+                new Product("Test3", "DescriptionTest",Category.SETS, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
+                new Product("Test4", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
+                new Product("Test5", "DescriptionTest",Category.SHAMPOOS, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
+                new Product("Test6", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
+                new Product("Test7", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg")
         );
         productRepo.saveAll(products);
+    }
+
+    @Test
+    public void addNewProduct_Test()
+    {
+        ProductService productService = new ProductService(productRepo);
+
+        Product newProductTest1 = new Product("Test8", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
+        Product newProductTest2 = new Product("Test9", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
+
+       int returnedTest1 = productService.addNewProduct(newProductTest1);
+       int returnedTest2 = productService.addNewProduct(newProductTest2);
+
+       Product addedProductTest = productService.getById(8).orElse(new Product());
+
+       assertEquals(returnedTest1, 1);
+       assertEquals(returnedTest2, 1);
+       assertEquals(addedProductTest.getName(), "Test8");
     }
 
     @Test

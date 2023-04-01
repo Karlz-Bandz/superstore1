@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.superstore.superstore.dto.ProductMenu;
+import pl.superstore.superstore.interfaces.Producter;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
 
@@ -14,10 +15,21 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductService
+public class ProductService implements Producter
 {
 
     private ProductRepo productRepo;
+
+    @Override
+    public int addNewProduct(Product product)
+    {
+        if(product != null)
+        {
+            productRepo.save(product);
+            return 1;
+        }
+        return 0;
+    }
 
     /**
      * This method generates the list of all products
@@ -27,6 +39,7 @@ public class ProductService
      * @param number
      * @return Product sublist of 5 objects
      */
+    @Override
     public List<ProductMenu> getOnePage(int number)
     {
         List<ProductMenu> products = productRepo.getAllProductsForMenu();
@@ -39,6 +52,7 @@ public class ProductService
         return subPages.get(number);
     }
 
+    @Override
     public Optional<Product> getById(long id)
     {
         return productRepo.findById(id);
