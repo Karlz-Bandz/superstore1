@@ -1,9 +1,12 @@
 package pl.superstore.superstore.services;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ProductMenu;
-import pl.superstore.superstore.models.Category;
+import pl.superstore.superstore.interfaces.Producer;
+import pl.superstore.superstore.models.Bucket;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
 
@@ -13,9 +16,37 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ProductService
+@NoArgsConstructor
+public class ProductService implements Producer
 {
-    ProductRepo productRepo;
+
+    private ProductRepo productRepo;
+
+    private Bucket bucket;
+
+    @Override
+    public List<BucketDto> showBucket()
+    {
+        return bucket.getPurchases();
+    }
+
+    @Override
+    public void addToBucket(long id)
+    {
+        Product chosenProduct = productRepo.findById(id).orElse(new Product());
+        bucket.addNewItem(chosenProduct);
+    }
+
+    @Override
+    public int addNewProduct(Product product)
+    {
+        if(product != null)
+        {
+            productRepo.save(product);
+            return 1;
+        }
+        return 0;
+    }
 
     /**
      * This method generates the list of all products
@@ -25,6 +56,7 @@ public class ProductService
      * @param number
      * @return Product sublist of 5 objects
      */
+    @Override
     public List<ProductMenu> getOnePage(int number)
     {
         List<ProductMenu> products = productRepo.getAllProductsForMenu();
@@ -37,17 +69,9 @@ public class ProductService
         return subPages.get(number);
     }
 
-    public String getById(long id)
+    @Override
+    public Optional<Product> getById(long id)
     {
-        StringBuilder builder = new StringBuilder();
-        Optional<Product> product = productRepo.findById(id);
-        if (product.isPresent())
-        {
-            Product p = product.get();
-            Category cat = p.getCategory();
-            builder.append(cat.getCategory());
-        }
-
-        return builder.toString();
+        return productRepo.findById(id);
     }
 }
