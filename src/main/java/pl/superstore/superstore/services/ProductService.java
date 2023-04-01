@@ -2,6 +2,7 @@ package pl.superstore.superstore.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.superstore.superstore.dto.ProductMenu;
 import pl.superstore.superstore.models.Category;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
@@ -24,10 +25,10 @@ public class ProductService
      * @param number
      * @return Product sublist of 5 objects
      */
-    public List<Product> getOnePage(int number)
+    public List<ProductMenu> getOnePage(int number)
     {
-        List<Product> products = productRepo.findAll();
-        List<List<Product>> subPages = new ArrayList<>();
+        List<ProductMenu> products = productRepo.getAllProductsForMenu();
+        List<List<ProductMenu>> subPages = new ArrayList<>();
 
         for(int i = 0; i < products.size(); i += 5)
         {

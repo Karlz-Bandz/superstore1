@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.superstore.superstore.dto.ProductMenu;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.services.ProductService;
 
@@ -29,7 +30,7 @@ public class ProductController
     }
 
     @GetMapping("/page/{number}")
-    public ResponseEntity<List<Product>> getPage(@PathVariable int number)
+    public ResponseEntity<List<ProductMenu>> getPage(@PathVariable int number)
     {
         return new ResponseEntity<>(productService.getOnePage(number), HttpStatus.OK);
     }
