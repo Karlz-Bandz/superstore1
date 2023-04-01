@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ProductMenu;
+import pl.superstore.superstore.models.Bucket;
 import pl.superstore.superstore.models.Category;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
@@ -28,6 +30,9 @@ public class ProductServiceTest
     @Autowired
     private ProductRepo productRepo;
 
+
+    private Bucket testBucket = new Bucket();
+
     /**
      * This method creates a fake database for the testing purpose
      */
@@ -46,9 +51,26 @@ public class ProductServiceTest
     }
 
     @Test
+    public void addToBucket_Test()
+    {
+        ProductService productService = new ProductService(productRepo, testBucket);
+
+        productService.addToBucket(2);
+        productService.addToBucket(4);
+        productService.addToBucket(1);
+
+        List<BucketDto> testBucketDto = productService.showBucket();
+
+        System.out.println("\nINSIDE THE BUCKET\n" + testBucketDto.toString() + "\n\n");
+
+        assertEquals(testBucketDto.size(), 3);
+
+    }
+
+    @Test
     public void addNewProduct_Test()
     {
-        ProductService productService = new ProductService(productRepo);
+        ProductService productService = new ProductService(productRepo, testBucket);
 
         Product newProductTest1 = new Product("Test8", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
         Product newProductTest2 = new Product("Test9", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
@@ -66,7 +88,7 @@ public class ProductServiceTest
     @Test
     public void getById_Test()
     {
-        ProductService productService = new ProductService(productRepo);
+        ProductService productService = new ProductService(productRepo,testBucket);
 
         Optional<Product> returnedProductTest1 = productService.getById(2);
         Optional<Product> returnedProductTest2 = productService.getById(3);
@@ -83,7 +105,7 @@ public class ProductServiceTest
     @Test
     public void getOnePage_Test()
     {
-        ProductService productService = new ProductService(productRepo);
+        ProductService productService = new ProductService(productRepo, testBucket);
 
         List<ProductMenu> page1Test = productService.getOnePage(0);
         List<ProductMenu> page2Test = productService.getOnePage(1);

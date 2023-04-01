@@ -3,8 +3,10 @@ package pl.superstore.superstore.services;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ProductMenu;
-import pl.superstore.superstore.interfaces.Producter;
+import pl.superstore.superstore.interfaces.Producer;
+import pl.superstore.superstore.models.Bucket;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
 
@@ -15,10 +17,25 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductService implements Producter
+public class ProductService implements Producer
 {
 
     private ProductRepo productRepo;
+
+    private Bucket bucket;
+
+    @Override
+    public List<BucketDto> showBucket()
+    {
+        return bucket.getPurchases();
+    }
+
+    @Override
+    public void addToBucket(long id)
+    {
+        Product chosenProduct = productRepo.findById(id).orElse(new Product());
+        bucket.addNewItem(chosenProduct);
+    }
 
     @Override
     public int addNewProduct(Product product)
