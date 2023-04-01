@@ -1,8 +1,14 @@
 package pl.superstore.superstore.models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+/**
+ * <strong>Category</strong> enum<br>
+ * Here are all categories occurring on
+ * superstore. This example introduces a
+ * kind of hair dressing shop.
+ *
+ */
 @Getter
 public enum Category
 {

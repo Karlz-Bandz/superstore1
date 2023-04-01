@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.services.ProductService;
 
-import java.util.Optional;
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/product")
@@ -24,6 +25,12 @@ public class ProductController
     @GetMapping("/test/{id}")
     public ResponseEntity<String> getProduct(@PathVariable long id)
     {
-        return new ResponseEntity<String>(productService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{number}")
+    public ResponseEntity<List<Product>> getPage(@PathVariable int number)
+    {
+        return new ResponseEntity<>(productService.getOnePage(number), HttpStatus.OK);
     }
 }

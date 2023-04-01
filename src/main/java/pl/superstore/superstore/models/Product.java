@@ -8,6 +8,11 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+/**
+ * <strong>Product</strong> class<br>
+ * This is a model of all products occurring on
+ * the superstore. All products are stored in database.
+ */
 @Entity
 @Table(name = "products")
 @AllArgsConstructor
