@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.superstore.superstore.dto.ProductMenu;
+import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.services.ProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
@@ -19,10 +21,10 @@ import java.util.List;
 public class ProductController
 {
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @GetMapping("/test/{id}")
-    public ResponseEntity<String> getProduct(@PathVariable long id)
+    public ResponseEntity<Optional<Product>> getProduct(@PathVariable long id)
     {
         return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
     }
