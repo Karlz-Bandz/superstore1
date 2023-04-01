@@ -3,6 +3,7 @@ package pl.superstore.superstore.services;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.superstore.superstore.models.Category;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
 
@@ -17,9 +18,17 @@ public class ProductService
     ProductRepo productRepo;
 
 
-    public Optional<Product> getById(long id)
+    public String getById(long id)
     {
+        StringBuilder builder = new StringBuilder();
         Optional<Product> product = productRepo.findById(id);
-        return product ;
+        if (product.isPresent())
+        {
+            Product p = product.get();
+            Category cat = p.getCategory();
+            builder.append(cat.getCategory());
+        }
+
+        return builder.toString();
     }
 }

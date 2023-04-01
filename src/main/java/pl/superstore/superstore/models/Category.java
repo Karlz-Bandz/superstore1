@@ -1,8 +1,9 @@
 package pl.superstore.superstore.models;
 
-import java.util.EnumSet;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-
+@Getter
 public enum Category
 {
     SHAMPOOS("Szampony"),
@@ -20,32 +21,12 @@ public enum Category
     WASHABLECOLOR("Koloryzacja zmywalna"),
     BRIGHTENERS("Rozjaśniacze"),
     KERATIN("Prostowanie keratynowe"),
-    DURABLE("Trwała"),
-    TEST("Test"),
-    TEST2("Test2");
+    DURABLE("Trwała");
 
-    public static final EnumSet<Category> ANOTHER = EnumSet.of(TEST, TEST2);
-
-    public static final EnumSet<Category> HAIRS = EnumSet.of(
-            SHAMPOOS,
-            CONDITIONERS,
-            MASKS,
-            TREATMENTS,
-            OILS,
-            PEELINGS,
-            SETS,
-            STYLING,
-            TURN,
-            TEXTURE,
-            DYES,
-            OXIDANTS,
-            WASHABLECOLOR,
-            BRIGHTENERS,
-            KERATIN,
-            DURABLE);
-
+    private String category;
 
     Category(String category)
     {
+        this.category = category;
     }
 }

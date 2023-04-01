@@ -24,7 +24,7 @@ public class Product
     private String name;
     @Column(nullable = false)
     private String description;
-    @Column(nullable = false)
+    @Enumerated(EnumType.ORDINAL)
     private Category category;
     @Column(nullable = false)
     private BigDecimal price;
