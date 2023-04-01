@@ -1,6 +1,8 @@
 package pl.superstore.superstore.services;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.superstore.superstore.dto.ProductMenu;
 import pl.superstore.superstore.models.Category;
@@ -13,8 +15,10 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductService
 {
+
     ProductRepo productRepo;
 
     /**

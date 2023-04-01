@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.superstore.superstore.dto.ProductMenu;
-import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.services.ProductService;
 
 import java.util.List;
-
 
 @Controller
 @RequestMapping("/product")

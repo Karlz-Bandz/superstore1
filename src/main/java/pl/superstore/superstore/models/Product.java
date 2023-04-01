@@ -15,7 +15,6 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "products")
-@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
@@ -35,4 +34,13 @@ public class Product
     private BigDecimal price;
     @Column(nullable = false)
     private String imageUrl;
+
+    public Product(String name, String description, Category category, BigDecimal price, String imageUrl)
+    {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
 }
