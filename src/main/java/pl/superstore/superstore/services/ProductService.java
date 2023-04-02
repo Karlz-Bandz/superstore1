@@ -51,6 +51,12 @@ public class ProductService implements Producer
     }
 
     @Override
+    public void removeFromBucket(int index)
+    {
+        bucket.removeItem(index);
+    }
+
+    @Override
     public int addNewProduct(Product product)
     {
         if(product != null)

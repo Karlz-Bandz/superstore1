@@ -38,4 +38,18 @@ public class Bucket
         amount = amount.add(product.getPrice());
         this.numberOfItems++;
     }
+
+    public void removeItem(int index)
+    {
+        int bucketLength = purchases.size();
+        if(index <= bucketLength - 1 && index >= 0)
+        {
+            amount = amount.subtract(purchases.get(index).getPrice());
+            this.numberOfItems--;
+            purchases.remove(index);
+        }else
+        {
+            System.out.println("Empty or not found!");
+        }
+    }
 }

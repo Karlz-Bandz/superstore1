@@ -18,6 +18,8 @@ public interface Producer
 
      void addToBucket(long id);
 
+     void removeFromBucket(int index);
+
      int addNewProduct(Product product);
 
      List<ProductMenu> getOnePage(int number);

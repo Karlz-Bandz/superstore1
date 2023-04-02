@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -29,8 +30,6 @@ public class ProductServiceTest
 {
     @Autowired
     private ProductRepo productRepo;
-
-    ProductService productService;
 
     private Bucket testBucket = new Bucket();
 
@@ -49,15 +48,65 @@ public class ProductServiceTest
                 new Product("Test7", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg")
         );
         productRepo.saveAll(products);
+    }
 
-        productService = new ProductService(productRepo, testBucket);
+    @Test
+    public void removeFromBucket_Test()
+    {
+        ProductService productService = new ProductService(productRepo, testBucket);
+
+        productService.removeFromBucket(3);
+
+        productService.addToBucket(2);
+        productService.addToBucket(2);
+        productService.addToBucket(1);
+        productService.addToBucket(3);
+        productService.addToBucket(4);
+        productService.addToBucket(5);
+
+        List<BucketDto> testList = productService.showBucket();
+        int testLength = testList.size();
+        int testNumberOfItems = productService.showTheNumberOfBucketItems();
+        BigDecimal testAmount = productService.showBucketAmount();
+
+        assertEquals(testLength, 6);
+        assertEquals(testAmount.compareTo(BigDecimal.valueOf(63.3)), 0);
+        assertEquals(testNumberOfItems, 6);
+
+        //Here try to remove item which is not exist
+        productService.removeFromBucket(6);
+
+        testList = productService.showBucket();
+        testLength = testList.size();
+        testAmount = productService.showBucketAmount();
+        testNumberOfItems = productService.showTheNumberOfBucketItems();
+
+        //And check if data inside the bucket wasn't changed if
+        //is not test is passed
+        assertEquals(testLength, 6);
+        assertEquals(testAmount.compareTo(BigDecimal.valueOf(63.3)), 0);
+        assertEquals(testNumberOfItems, 6);
+
+        //Now removing real item and check all changes
+        productService.removeFromBucket(3);
+
+        testList = productService.showBucket();
+        testLength = testList.size();
+        testAmount = productService.showBucketAmount();
+        testNumberOfItems = productService.showTheNumberOfBucketItems();
+
+        assertEquals(testLength, 5);
+        assertEquals(testAmount.compareTo(BigDecimal.valueOf(52.75)), 0);
+        assertEquals(testNumberOfItems, 5);
     }
 
     @Test
     public void addToBucket_Test()
     {
+        ProductService productService = new ProductService(productRepo, testBucket);
+
         productService.addToBucket(2);
-        productService.addToBucket(4);
+        productService.addToBucket(2);
         productService.addToBucket(1);
 
         List<BucketDto> testBucketDto = productService.showBucket();
@@ -70,11 +119,19 @@ public class ProductServiceTest
         assertEquals(testBucketDto.size(), 3);
         assertEquals(testNumberOfItems, 3);
         assertEquals(testAmount.compareTo(BigDecimal.valueOf(31.65)), 0);
+
+        //Clear the bucket
+        productService.removeFromBucket(2);
+        productService.removeFromBucket(1);
+        productService.removeFromBucket(0);
+
     }
 
     @Test
     public void addNewProduct_Test()
     {
+        ProductService productService = new ProductService(productRepo, testBucket);
+
         Product newProductTest1 = new Product("Test8", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
         Product newProductTest2 = new Product("Test9", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
 
@@ -91,6 +148,8 @@ public class ProductServiceTest
     @Test
     public void getById_Test()
     {
+        ProductService productService = new ProductService(productRepo, testBucket);
+
         Product returnedProductTest1 = productService.getById(2).orElse(new Product());
         Product returnedProductTest2 = productService.getById(3).orElse(new Product());
 
