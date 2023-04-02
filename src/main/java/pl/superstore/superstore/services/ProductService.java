@@ -67,6 +67,17 @@ public class ProductService implements Producer
         return 0;
     }
 
+    @Override
+    public int removeProduct(long id)
+    {
+        if(productRepo.existsById(id))
+        {
+            productRepo.deleteById(id);
+            return 1;
+        }
+        return 0;
+    }
+
     /**
      * This method generates the list of all products
      * stored in database and cuts the list to smaller
@@ -89,8 +100,9 @@ public class ProductService implements Producer
     }
 
     @Override
-    public Optional<Product> getById(long id)
+    public Product getById(long id)
     {
-        return productRepo.findById(id);
+        Product product = productRepo.findById(id).orElse(new Product());
+        return product;
     }
 }

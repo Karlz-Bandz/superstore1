@@ -22,7 +22,9 @@ public interface Producer
 
      int addNewProduct(Product product);
 
+     int removeProduct(long id);
+
      List<ProductMenu> getOnePage(int number);
 
-     Optional<Product> getById(long id);
+     Product getById(long id);
 }
