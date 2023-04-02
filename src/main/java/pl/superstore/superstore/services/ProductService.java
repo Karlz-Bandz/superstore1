@@ -10,6 +10,7 @@ import pl.superstore.superstore.models.Bucket;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,18 @@ public class ProductService implements Producer
     private ProductRepo productRepo;
 
     private Bucket bucket;
+
+    @Override
+    public int showTheNumberOfBucketItems()
+    {
+        return bucket.getNumberOfItems();
+    }
+
+    @Override
+    public BigDecimal showBucketAmount()
+    {
+        return bucket.getAmount();
+    }
 
     @Override
     public List<BucketDto> showBucket()
