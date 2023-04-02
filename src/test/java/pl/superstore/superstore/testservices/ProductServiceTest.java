@@ -18,9 +18,10 @@ import pl.superstore.superstore.services.ProductService;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -29,7 +30,6 @@ public class ProductServiceTest
 {
     @Autowired
     private ProductRepo productRepo;
-
 
     private Bucket testBucket = new Bucket();
 
@@ -51,19 +51,79 @@ public class ProductServiceTest
     }
 
     @Test
+    public void removeFromBucket_Test()
+    {
+        ProductService productService = new ProductService(productRepo, testBucket);
+
+        productService.removeFromBucket(3);
+
+        productService.addToBucket(2);
+        productService.addToBucket(2);
+        productService.addToBucket(1);
+        productService.addToBucket(3);
+        productService.addToBucket(4);
+        productService.addToBucket(5);
+
+        List<BucketDto> testList = productService.showBucket();
+        int testLength = testList.size();
+        int testNumberOfItems = productService.showTheNumberOfBucketItems();
+        BigDecimal testAmount = productService.showBucketAmount();
+
+        assertEquals(testLength, 6);
+        assertEquals(testAmount.compareTo(BigDecimal.valueOf(63.3)), 0);
+        assertEquals(testNumberOfItems, 6);
+
+        //Here try to remove item which is not exist
+        productService.removeFromBucket(6);
+
+        testList = productService.showBucket();
+        testLength = testList.size();
+        testAmount = productService.showBucketAmount();
+        testNumberOfItems = productService.showTheNumberOfBucketItems();
+
+        //And check if data inside the bucket wasn't changed if
+        //is not test is passed
+        assertEquals(testLength, 6);
+        assertEquals(testAmount.compareTo(BigDecimal.valueOf(63.3)), 0);
+        assertEquals(testNumberOfItems, 6);
+
+        //Now removing real item and check all changes
+        productService.removeFromBucket(3);
+
+        testList = productService.showBucket();
+        testLength = testList.size();
+        testAmount = productService.showBucketAmount();
+        testNumberOfItems = productService.showTheNumberOfBucketItems();
+
+        assertEquals(testLength, 5);
+        assertEquals(testAmount.compareTo(BigDecimal.valueOf(52.75)), 0);
+        assertEquals(testNumberOfItems, 5);
+    }
+
+    @Test
     public void addToBucket_Test()
     {
         ProductService productService = new ProductService(productRepo, testBucket);
 
         productService.addToBucket(2);
-        productService.addToBucket(4);
+        productService.addToBucket(2);
         productService.addToBucket(1);
 
         List<BucketDto> testBucketDto = productService.showBucket();
 
+        BigDecimal testAmount = productService.showBucketAmount();
+        int testNumberOfItems = productService.showTheNumberOfBucketItems();
+
         System.out.println("\nINSIDE THE BUCKET\n" + testBucketDto.toString() + "\n\n");
 
         assertEquals(testBucketDto.size(), 3);
+        assertEquals(testNumberOfItems, 3);
+        assertEquals(testAmount.compareTo(BigDecimal.valueOf(31.65)), 0);
+
+        //Clear the bucket
+        productService.removeFromBucket(2);
+        productService.removeFromBucket(1);
+        productService.removeFromBucket(0);
 
     }
 
@@ -75,31 +135,28 @@ public class ProductServiceTest
         Product newProductTest1 = new Product("Test8", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
         Product newProductTest2 = new Product("Test9", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg");
 
-       int returnedTest1 = productService.addNewProduct(newProductTest1);
-       int returnedTest2 = productService.addNewProduct(newProductTest2);
+        int returnedTest1 = productService.addNewProduct(newProductTest1);
+        int returnedTest2 = productService.addNewProduct(newProductTest2);
 
-       Product addedProductTest = productService.getById(8).orElse(new Product());
+        Product addedProductTest = productService.getById(8).orElse(new Product());
 
-       assertEquals(returnedTest1, 1);
-       assertEquals(returnedTest2, 1);
-       assertEquals(addedProductTest.getName(), "Test8");
+        assertEquals(returnedTest1, 1);
+        assertEquals(returnedTest2, 1);
+        assertEquals(addedProductTest.getName(), "Test8");
     }
 
     @Test
     public void getById_Test()
     {
-        ProductService productService = new ProductService(productRepo,testBucket);
+        ProductService productService = new ProductService(productRepo, testBucket);
 
-        Optional<Product> returnedProductTest1 = productService.getById(2);
-        Optional<Product> returnedProductTest2 = productService.getById(3);
+        Product returnedProductTest1 = productService.getById(2).orElse(new Product());
+        Product returnedProductTest2 = productService.getById(3).orElse(new Product());
 
-        Product productTest1 = returnedProductTest1.orElse(new Product());
-        Product productTest2 = returnedProductTest2.orElse(new Product());
-
-              assertEquals(productTest1.getId(), 2);
-              assertEquals(productTest1.getName(), "Test2");
-              assertEquals(productTest2.getId(), 3);
-              assertEquals(productTest2.getName(), "Test3");
+        assertEquals(returnedProductTest1.getId(), 2);
+        assertEquals(returnedProductTest1.getName(), "Test2");
+        assertEquals(returnedProductTest2.getId(), 3);
+        assertEquals(returnedProductTest2.getName(), "Test3");
     }
 
     @Test
