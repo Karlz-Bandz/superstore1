@@ -13,8 +13,14 @@ import pl.superstore.superstore.repos.ProductRepo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * <strong>ProductService</strong> class<br>
+ * This class manages all logic of {@link Bucket} and {@link Product}
+ * <br>
+ * @author Karol Melak
+ * @since 1.0
+ */
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
@@ -89,6 +95,12 @@ public class ProductService implements Producer
     @Override
     public List<ProductMenu> getOnePage(int number)
     {
+       if(productRepo == null)
+       {
+           System.out.println("Empty repo!");
+           return null;
+       }
+
         List<ProductMenu> products = productRepo.getAllProductsForMenu();
         List<List<ProductMenu>> subPages = new ArrayList<>();
 
