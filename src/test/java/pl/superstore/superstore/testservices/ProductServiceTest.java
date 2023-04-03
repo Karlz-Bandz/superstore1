@@ -19,9 +19,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -45,9 +43,27 @@ public class ProductServiceTest
                 new Product("Test4", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
                 new Product("Test5", "DescriptionTest",Category.SHAMPOOS, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
                 new Product("Test6", "DescriptionTest",Category.KERATIN, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
-                new Product("Test7", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg")
+                new Product("Test7", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg"),
+                new Product("Test8", "DescriptionTest",Category.OILS, BigDecimal.valueOf(10.55),"/rr/jj.jpg")
         );
         productRepo.saveAll(products);
+    }
+
+    @Test
+    public void removeProduct_Test()
+    {
+        ProductService productService = new ProductService(productRepo, testBucket);
+        Product productTest = productService.getById(2);
+
+        assertEquals(productTest.getName(), "Test2");
+
+        productService.removeProduct(2);
+        productService.removeProduct(3);
+        productTest = productService.getById(2);
+        System.out.println(productService.getOnePage(0).toString());
+
+        assertEquals(productTest.getName(),null);
+        assertEquals(productTest.getPrice(),null);
     }
 
     @Test
@@ -138,7 +154,7 @@ public class ProductServiceTest
         int returnedTest1 = productService.addNewProduct(newProductTest1);
         int returnedTest2 = productService.addNewProduct(newProductTest2);
 
-        Product addedProductTest = productService.getById(8).orElse(new Product());
+        Product addedProductTest = productService.getById(8);
 
         assertEquals(returnedTest1, 1);
         assertEquals(returnedTest2, 1);
@@ -150,8 +166,8 @@ public class ProductServiceTest
     {
         ProductService productService = new ProductService(productRepo, testBucket);
 
-        Product returnedProductTest1 = productService.getById(2).orElse(new Product());
-        Product returnedProductTest2 = productService.getById(3).orElse(new Product());
+        Product returnedProductTest1 = productService.getById(2);
+        Product returnedProductTest2 = productService.getById(3);
 
         assertEquals(returnedProductTest1.getId(), 2);
         assertEquals(returnedProductTest1.getName(), "Test2");
@@ -176,7 +192,8 @@ public class ProductServiceTest
         );
         List<ProductMenu> expected2 = Arrays.asList(
                 new ProductMenu(6L, "Test6", "/rr/jj.jpg", BigDecimal.valueOf(10.55), Category.KERATIN),
-                new ProductMenu(7L, "Test7", "/rr/jj.jpg", BigDecimal.valueOf(10.55), Category.OILS)
+                new ProductMenu(7L, "Test7", "/rr/jj.jpg", BigDecimal.valueOf(10.55), Category.OILS),
+                new ProductMenu(8L, "Test8", "/rr/jj.jpg", BigDecimal.valueOf(10.55), Category.OILS)
         );
 
         assertEquals(expected, page1Test);

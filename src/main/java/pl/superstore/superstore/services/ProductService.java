@@ -2,6 +2,7 @@ package pl.superstore.superstore.services;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ProductMenu;
@@ -13,14 +14,20 @@ import pl.superstore.superstore.repos.ProductRepo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * <strong>ProductService</strong> class<br>
+ * This class manages all logic of {@link Bucket} and {@link Product}
+ * <br>
+ * @author Karol Melak
+ * @since 1.0
+ */
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductService implements Producer
 {
-
+    @Autowired
     private ProductRepo productRepo;
 
     private Bucket bucket;
@@ -67,6 +74,17 @@ public class ProductService implements Producer
         return 0;
     }
 
+    @Override
+    public int removeProduct(long id)
+    {
+        if(productRepo.existsById(id))
+        {
+            productRepo.deleteById(id);
+            return 1;
+        }
+        return 0;
+    }
+
     /**
      * This method generates the list of all products
      * stored in database and cuts the list to smaller
@@ -78,6 +96,12 @@ public class ProductService implements Producer
     @Override
     public List<ProductMenu> getOnePage(int number)
     {
+       if(productRepo.count() == 0)
+       {
+           System.out.println("Empty repo!");
+           return null;
+       }
+
         List<ProductMenu> products = productRepo.getAllProductsForMenu();
         List<List<ProductMenu>> subPages = new ArrayList<>();
 
@@ -89,8 +113,15 @@ public class ProductService implements Producer
     }
 
     @Override
-    public Optional<Product> getById(long id)
+    public Product getById(long id)
     {
-        return productRepo.findById(id);
+        Product product = productRepo.findById(id).orElse(new Product());
+        return product;
+    }
+
+    @Override
+    public List<Product> getAll()
+    {
+        return productRepo.findAll();
     }
 }
