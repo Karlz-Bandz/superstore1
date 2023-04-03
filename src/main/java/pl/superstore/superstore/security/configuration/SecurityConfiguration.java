@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -15,11 +16,15 @@ public class SecurityConfiguration
         http
                 .cors().disable()
                 .csrf().disable()
-                .authorizeHttpRequests()
-                .anyRequest().authenticated()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .httpBasic();
-
+                .formLogin().disable()
+                .securityMatcher("/**")
+                .authorizeHttpRequests(resgistry -> resgistry
+                                .requestMatchers("/product/**").permitAll()
+                                .anyRequest()
+                                .authenticated()
+                        );
         return http.build();
     }
 }
