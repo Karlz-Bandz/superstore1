@@ -1,6 +1,7 @@
 package pl.superstore.superstore.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class Product
@@ -42,4 +44,6 @@ public class Product
         this.price = price;
         this.imageUrl = imageUrl;
     }
+
+
 }

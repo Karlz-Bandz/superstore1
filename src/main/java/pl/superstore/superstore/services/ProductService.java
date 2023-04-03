@@ -2,6 +2,7 @@ package pl.superstore.superstore.services;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ProductMenu;
@@ -26,7 +27,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductService implements Producer
 {
-
+    @Autowired
     private ProductRepo productRepo;
 
     private Bucket bucket;
@@ -95,7 +96,7 @@ public class ProductService implements Producer
     @Override
     public List<ProductMenu> getOnePage(int number)
     {
-       if(productRepo == null)
+       if(productRepo.count() == 0)
        {
            System.out.println("Empty repo!");
            return null;
@@ -116,5 +117,11 @@ public class ProductService implements Producer
     {
         Product product = productRepo.findById(id).orElse(new Product());
         return product;
+    }
+
+    @Override
+    public List<Product> getAll()
+    {
+        return productRepo.findAll();
     }
 }

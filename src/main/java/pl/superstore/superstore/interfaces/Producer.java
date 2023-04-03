@@ -27,4 +27,6 @@ public interface Producer
      List<ProductMenu> getOnePage(int number);
 
      Product getById(long id);
+
+     List<Product> getAll();
 }
