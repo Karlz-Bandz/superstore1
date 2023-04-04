@@ -1,5 +1,6 @@
 package pl.superstore.superstore.testservices;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.superstore.superstore.dto.UserDto;
 import pl.superstore.superstore.models.Role;
+import pl.superstore.superstore.models.User;
 import pl.superstore.superstore.services.UserService;
 
 import java.util.List;
@@ -49,10 +51,9 @@ public class UserServiceTest
         userServiceTest.addNewUser(userDtoTest3);
         List<String> testNames = userServiceTest.getAllUsersNames();
 
-        for (String x: testNames)
-        {
-            System.out.println(x);
-        }
+        Assertions.assertEquals(testNames.size(), 3);
+
+        userServiceTest.deleteAll();
     }
 
     @Test
@@ -60,10 +61,18 @@ public class UserServiceTest
     {
         UserDto userDtoTest = new UserDto("Mateusz", "Last", "pass",
                 "mail@mail.com", "");
-        UserDto userDtoTest2 = new UserDto("Mateusz", "Last", "pass",
+        UserDto userDtoTest2 = new UserDto("Marek", "Last", "pass",
                 "mail@mail.com", "");
 
         userServiceTest.addNewUser(userDtoTest);
         userServiceTest.addNewUser(userDtoTest2);
+
+        List<User> users = userServiceTest.getAllUsers();
+
+        Assertions.assertEquals(users.get(0).getName(), "Mateusz");
+        Assertions.assertEquals(users.get(1).getName(), "Marek");
+        Assertions.assertEquals(users.size(), 2);
+
+        userServiceTest.deleteAll();
     }
 }

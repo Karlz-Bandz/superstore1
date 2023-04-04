@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.superstore.superstore.dto.UserDto;
+import pl.superstore.superstore.interfaces.UserManager;
 import pl.superstore.superstore.models.Role;
 import pl.superstore.superstore.models.User;
 import pl.superstore.superstore.repos.RoleRepo;
 import pl.superstore.superstore.repos.UserRepo;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserService
+public class UserService implements UserManager
 {
     @Autowired
     private UserRepo userRepo;
@@ -29,6 +29,7 @@ public class UserService
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Override
     public void addNewUser(UserDto userDto)
     {
         Role role = roleRepo.findByRole("USER").orElseThrow(() -> new RuntimeException("Role not found"));
@@ -42,13 +43,27 @@ public class UserService
         userRepo.save(user);
     }
 
-   public List<String> getAllUsersNames()
-   {
+    @Override
+    public List<String> getAllUsersNames()
+    {
        return userRepo.getAllUsersNames();
-   }
+    }
 
-   public void addRole(Role role)
-   {
+    @Override
+    public void addRole(Role role)
+    {
        roleRepo.save(role);
-   }
+    }
+
+    /**
+     * Only for testing purposes
+     */
+    public void deleteAll()
+    {
+        userRepo.deleteAll();
+    }
+    public List<User> getAllUsers()
+    {
+        return userRepo.findAll();
+    }
 }
