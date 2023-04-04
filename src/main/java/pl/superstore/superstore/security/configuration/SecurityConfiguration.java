@@ -26,7 +26,7 @@ public class SecurityConfiguration
                                 .requestMatchers("/product/**", "/user/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
-                        );
+                                 );
         return http.build();
     }
 
