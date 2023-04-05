@@ -30,17 +30,28 @@ public class UserService implements UserManager
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void addNewUser(UserDto userDto)
+    public boolean addNewUser(UserDto userDto)
     {
-        Role role = roleRepo.findByRole("USER").orElseThrow(() -> new RuntimeException("Role not found"));
-        User user = new User();
-        user.setName(userDto.getName());
-        user.setLastName(userDto.getLastName());
-        user.setMail(userDto.getMail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRoles(Collections.singletonList(role));
+        User foundUser = userRepo.findByMail(userDto.getMail()).orElse(new User());
+
+        if(foundUser.getMail() != null)
+        {
+            System.out.println("Mail already exists!");
+            return false;
+        }else{
+
+            Role role = roleRepo.findByRole("USER").orElseThrow(() -> new RuntimeException("Role not found"));
+            User user = new User();
+            user.setName(userDto.getName());
+            user.setLastName(userDto.getLastName());
+            user.setMail(userDto.getMail());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setRoles(Collections.singletonList(role));
 
         userRepo.save(user);
+
+        return true;
+        }
     }
 
     @Override
@@ -53,6 +64,24 @@ public class UserService implements UserManager
         }
         else
         return false;
+    }
+
+    @Override
+    public boolean changeThePassword(String mail, String newPass)
+    {
+        User user = userRepo.findByMail(mail).orElseThrow(() -> new RuntimeException("Mail not exists!"));
+        boolean checkCurrentPass = passwordEncoder.matches(newPass, user.getPassword());
+
+        if(checkCurrentPass)
+        {
+            System.out.println("Provided the current password!");
+            return false;
+        }else
+        {
+            user.setPassword(passwordEncoder.encode(newPass));
+            userRepo.save(user);
+            return true;
+        }
     }
 
     @Override

@@ -37,14 +37,43 @@ public class UserServiceTest
     }
 
     @Test
+    public void changeThePassword_Test()
+    {
+        UserDto userDtoTest = new UserDto("Mateusz", "Last", "pass",
+                "mail@mail.com", "");
+        UserDto userDtoTest2 = new UserDto("Mateusz", "Last", "pass",
+                "mail2@mail.com", "");
+
+        userServiceTest.addNewUser(userDtoTest);
+        userServiceTest.addNewUser(userDtoTest2);
+
+        boolean changePassTest1 = userServiceTest.changeThePassword("mail@mail.com", "pass");
+        boolean changePassTest2 = userServiceTest.changeThePassword("mail@mail.com", "pass2");
+        List<User> usersTest = userServiceTest.getAllUsers();
+        String changedPass = usersTest.get(0).getPassword();
+
+        boolean expectedPassTest1 = false;
+        boolean expectedPassTest2 = true;
+        int expectedLengthTest = 2;
+        String expectedChangedPass = "pass2";
+
+        Assertions.assertEquals(changePassTest1, expectedPassTest1);
+        Assertions.assertEquals(changePassTest2, expectedPassTest2);
+        Assertions.assertEquals(usersTest.size(), expectedLengthTest);
+        Assertions.assertTrue(passwordEncoderTest.matches(expectedChangedPass, changedPass));
+
+        userServiceTest.deleteAll();
+    }
+
+    @Test
     public void deleteUserById_Test()
     {
         UserDto userDtoTest = new UserDto("Mateusz", "Last", "pass",
                 "mail@mail.com", "");
         UserDto userDtoTest2 = new UserDto("Pazdan", "Last", "pass",
-                "mail@mail.com", "");
+                "mail2@mail.com", "");
         UserDto userDtoTest3 = new UserDto("PApryk", "Last", "pass",
-                "mail@mail.com", "");
+                "mail3@mail.com", "");
 
         userServiceTest.addNewUser(userDtoTest);
         userServiceTest.addNewUser(userDtoTest2);
@@ -73,9 +102,9 @@ public class UserServiceTest
         UserDto userDtoTest = new UserDto("Mateusz", "Last", "pass",
                 "mail@mail.com", "");
         UserDto userDtoTest2 = new UserDto("Pazdan", "Last", "pass",
-                "mail@mail.com", "");
+                "mail2@mail.com", "");
         UserDto userDtoTest3 = new UserDto("PApryk", "Last", "pass",
-                "mail@mail.com", "");
+                "mail3@mail.com", "");
 
         userServiceTest.addNewUser(userDtoTest);
         userServiceTest.addNewUser(userDtoTest2);
@@ -94,15 +123,21 @@ public class UserServiceTest
                 "mail@mail.com", "");
         UserDto userDtoTest2 = new UserDto("Marek", "Last", "pass",
                 "mail@mail.com", "");
+        UserDto userDtoTest3 = new UserDto("Marek", "Last", "pass",
+                "maildiffer@mail.com", "");
 
-        userServiceTest.addNewUser(userDtoTest);
-        userServiceTest.addNewUser(userDtoTest2);
+        boolean checkTest1 = userServiceTest.addNewUser(userDtoTest);
+        boolean checkTest2 = userServiceTest.addNewUser(userDtoTest2);
+        boolean checkTest3 = userServiceTest.addNewUser(userDtoTest3);
 
         List<User> users = userServiceTest.getAllUsers();
 
         Assertions.assertEquals(users.get(0).getName(), "Mateusz");
         Assertions.assertEquals(users.get(1).getName(), "Marek");
         Assertions.assertEquals(users.size(), 2);
+        Assertions.assertEquals(checkTest1, true);
+        Assertions.assertEquals(checkTest2, false);
+        Assertions.assertEquals(checkTest3, true);
 
         userServiceTest.deleteAll();
     }

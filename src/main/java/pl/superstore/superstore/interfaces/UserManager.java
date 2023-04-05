@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface UserManager
 {
-    void addNewUser(UserDto userDto);
+    boolean addNewUser(UserDto userDto);
 
     boolean deleteUserBYId(long id);
+
+    boolean changeThePassword(String mail, String newPass);
 
     List<String> getAllUsersNames();
 
