@@ -44,6 +44,18 @@ public class UserService implements UserManager
     }
 
     @Override
+    public boolean deleteUserBYId(long id)
+    {
+        if(userRepo.existsById(id))
+        {
+            userRepo.deleteById(id);
+            return true;
+        }
+        else
+        return false;
+    }
+
+    @Override
     public List<String> getAllUsersNames()
     {
        return userRepo.getAllUsersNames();

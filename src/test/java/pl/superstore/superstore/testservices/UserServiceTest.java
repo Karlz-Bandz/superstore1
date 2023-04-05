@@ -37,6 +37,37 @@ public class UserServiceTest
     }
 
     @Test
+    public void deleteUserById_Test()
+    {
+        UserDto userDtoTest = new UserDto("Mateusz", "Last", "pass",
+                "mail@mail.com", "");
+        UserDto userDtoTest2 = new UserDto("Pazdan", "Last", "pass",
+                "mail@mail.com", "");
+        UserDto userDtoTest3 = new UserDto("PApryk", "Last", "pass",
+                "mail@mail.com", "");
+
+        userServiceTest.addNewUser(userDtoTest);
+        userServiceTest.addNewUser(userDtoTest2);
+        userServiceTest.addNewUser(userDtoTest3);
+
+        List<User> users = userServiceTest.getAllUsers();
+
+        boolean testSolution1 = userServiceTest.deleteUserBYId(50);
+        boolean testSolution2 = userServiceTest.deleteUserBYId(users.get(1).getId());
+        boolean testSolution3 = userServiceTest.deleteUserBYId(users.get(1).getId());
+
+        int expectedSize = 2;
+        int solutionSizeTest = userServiceTest.getAllUsersNames().size();
+
+        Assertions.assertEquals(testSolution1, false);
+        Assertions.assertEquals(testSolution2, true);
+        Assertions.assertEquals(testSolution3, false);
+        Assertions.assertEquals(solutionSizeTest, expectedSize);
+
+        userServiceTest.deleteAll();
+    }
+
+    @Test
     public void getAllUsersNames_Test()
     {
         UserDto userDtoTest = new UserDto("Mateusz", "Last", "pass",
