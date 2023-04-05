@@ -55,6 +55,31 @@ public class UserService implements UserManager
     }
 
     @Override
+    public boolean addNewAdmin(UserDto userDto)
+    {
+        User foundUser = userRepo.findByMail(userDto.getMail()).orElse(new User());
+
+        if(foundUser.getMail() != null)
+        {
+            System.out.println("Mail already exists!");
+            return false;
+        }else{
+
+            Role role = roleRepo.findByRole("ADMIN").orElseThrow(() -> new RuntimeException("Role not found"));
+            User user = new User();
+            user.setName(userDto.getName());
+            user.setLastName(userDto.getLastName());
+            user.setMail(userDto.getMail());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setRoles(Collections.singletonList(role));
+
+            userRepo.save(user);
+
+            return true;
+        }
+    }
+
+    @Override
     public boolean deleteUserBYId(long id)
     {
         if(userRepo.existsById(id))

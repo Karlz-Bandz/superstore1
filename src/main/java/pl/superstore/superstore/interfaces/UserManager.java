@@ -9,6 +9,8 @@ public interface UserManager
 {
     boolean addNewUser(UserDto userDto);
 
+    boolean addNewAdmin(UserDto userDto);
+
     boolean deleteUserBYId(long id);
 
     boolean changeThePassword(String mail, String newPass);
