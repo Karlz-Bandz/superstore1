@@ -141,4 +141,30 @@ public class UserServiceTest
 
         userServiceTest.deleteAll();
     }
+
+    @Test
+    public void addNewAdmin_Test()
+    {
+        UserDto userDtoTest = new UserDto("Mateusz", "Last", "pass",
+                "mail@mail.com", "");
+        UserDto userDtoTest2 = new UserDto("Marek", "Last", "pass",
+                "mail@mail.com", "");
+        UserDto userDtoTest3 = new UserDto("Marek", "Last", "pass",
+                "maildiffer@mail.com", "");
+
+        boolean checkTest1 = userServiceTest.addNewAdmin(userDtoTest);
+        boolean checkTest2 = userServiceTest.addNewAdmin(userDtoTest2);
+        boolean checkTest3 = userServiceTest.addNewAdmin(userDtoTest3);
+
+        List<User> users = userServiceTest.getAllUsers();
+
+        Assertions.assertEquals(users.get(0).getName(), "Mateusz");
+        Assertions.assertEquals(users.get(1).getName(), "Marek");
+        Assertions.assertEquals(users.size(), 2);
+        Assertions.assertEquals(checkTest1, true);
+        Assertions.assertEquals(checkTest2, false);
+        Assertions.assertEquals(checkTest3, true);
+
+        userServiceTest.deleteAll();
+    }
 }

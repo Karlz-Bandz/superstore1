@@ -25,10 +25,24 @@ public class UserController
         UserDto userDto = new UserDto();
         userDto.setName("Test");
         userDto.setLastName("LastTest");
-        userDto.setMail("karol@kar.pl");
+        userDto.setMail("karole@kar.pl");
         userDto.setPassword("password");
         userDto.setPhoneNumber("");
         userService.addNewUser(userDto);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/register/a")
+    public ResponseEntity<Void> createAdmin()
+    {
+        UserDto userDto = new UserDto();
+        userDto.setName("KArol");
+        userDto.setLastName("LastTest");
+        userDto.setMail("kaarolee@kar.pl");
+        userDto.setPassword("kaarol123");
+        userDto.setPhoneNumber("505 829 237");
+        userService.addNewAdmin(userDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
