@@ -1,5 +1,6 @@
 package pl.superstore.superstore.services;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class UserService implements UserManager
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public boolean addNewUser(UserDto userDto)
     {
         User foundUser = userRepo.findByMail(userDto.getMail()).orElse(new User());
@@ -55,6 +57,7 @@ public class UserService implements UserManager
     }
 
     @Override
+    @Transactional
     public boolean addNewAdmin(UserDto userDto)
     {
         User foundUser = userRepo.findByMail(userDto.getMail()).orElse(new User());
@@ -80,6 +83,7 @@ public class UserService implements UserManager
     }
 
     @Override
+    @Transactional
     public boolean deleteUserBYId(long id)
     {
         if(userRepo.existsById(id))
@@ -92,6 +96,7 @@ public class UserService implements UserManager
     }
 
     @Override
+    @Transactional
     public boolean changeThePassword(String mail, String newPass)
     {
         User user = userRepo.findByMail(mail).orElseThrow(() -> new RuntimeException("Mail not exists!"));
@@ -124,6 +129,7 @@ public class UserService implements UserManager
     /**
      * Only for testing purposes
      */
+    @Transactional
     public void deleteAll()
     {
         userRepo.deleteAll();

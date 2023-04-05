@@ -1,5 +1,6 @@
 package pl.superstore.superstore.services;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class ProductService implements Producer
     }
 
     @Override
+    @Transactional
     public int addNewProduct(Product product)
     {
         if(product != null)
@@ -75,6 +77,7 @@ public class ProductService implements Producer
     }
 
     @Override
+    @Transactional
     public int removeProduct(long id)
     {
         if(productRepo.existsById(id))
