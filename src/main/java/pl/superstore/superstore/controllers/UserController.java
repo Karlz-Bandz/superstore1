@@ -19,16 +19,27 @@ public class UserController
     @Autowired
     private UserService userService;
 
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable long id)
+    {
+        userService.deleteUserBYId(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/register")
     public ResponseEntity<Void> createUser()
     {
-        UserDto userDto = new UserDto();
-        userDto.setName("Test");
-        userDto.setLastName("LastTest");
-        userDto.setMail("karole@kar.pl");
-        userDto.setPassword("password");
-        userDto.setPhoneNumber("");
-        userService.addNewUser(userDto);
+        for(int i = 0; i < 3; i++)
+        {
+            UserDto userDto = new UserDto();
+            userDto.setName("Test");
+            userDto.setLastName("LastTest"+i);
+            userDto.setMail("karole"+i+"@kar.pl");
+            userDto.setPassword("password");
+            userDto.setPhoneNumber("");
+            userService.addNewUser(userDto);
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
