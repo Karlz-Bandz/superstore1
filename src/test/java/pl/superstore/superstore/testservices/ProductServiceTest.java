@@ -49,6 +49,15 @@ public class ProductServiceTest
     }
 
     @Test
+    public void getNumberOfProducts_Test()
+    {
+        ProductService productService = new ProductService(productRepo);
+        int solutionTest = productService.getNumberOfProducts();
+
+        assertEquals(solutionTest, 8);
+    }
+
+    @Test
     public void removeProduct_Test()
     {
         ProductService productService = new ProductService(productRepo);

@@ -18,5 +18,7 @@ public interface Producer
 
      Product getById(long id);
 
+     int getNumberOfProducts();
+
      List<Product> getAll();
 }

@@ -88,6 +88,12 @@ public class ProductService implements Producer
     }
 
     @Override
+    public int getNumberOfProducts()
+    {
+        return productRepo.getNumberOfProducts();
+    }
+
+    @Override
     public List<Product> getAll()
     {
         return productRepo.findAll();
