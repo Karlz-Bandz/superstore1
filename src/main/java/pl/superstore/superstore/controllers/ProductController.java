@@ -9,6 +9,7 @@ import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ID_Dto;
 import pl.superstore.superstore.dto.ProductMenu;
 import pl.superstore.superstore.models.Product;
+import pl.superstore.superstore.services.BasketService;
 import pl.superstore.superstore.services.ProductService;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class ProductController
 {
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private BasketService basketService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getAll()
@@ -42,13 +46,13 @@ public class ProductController
     @PostMapping("/basket/add")
     public ResponseEntity<Void> addToBucket(@RequestBody ID_Dto id_Dto)
     {
-        productService.addToBucket(id_Dto.getId());
+        basketService.addToBasket(id_Dto.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/basket/show")
     public ResponseEntity<List<BucketDto>> showBucket()
     {
-        return new ResponseEntity<>(productService.showBucket(),HttpStatus.OK);
+        return new ResponseEntity<>(basketService.showBasket(),HttpStatus.OK);
     }
 }

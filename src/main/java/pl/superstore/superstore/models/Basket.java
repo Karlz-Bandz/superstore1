@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor
-public class Bucket
+public class Basket
 {
     private List<BucketDto> purchases;
 
@@ -26,7 +26,7 @@ public class Bucket
 
     private int numberOfItems;
 
-    public Bucket()
+    public Basket()
     {
         purchases = new ArrayList<>();
         this.amount = new BigDecimal(0.00);
