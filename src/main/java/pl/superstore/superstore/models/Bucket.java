@@ -1,5 +1,6 @@
 package pl.superstore.superstore.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import pl.superstore.superstore.dto.BucketDto;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * we can add new product or remove chosen product.
  */
 @Getter
+@AllArgsConstructor
 public class Bucket
 {
     private List<BucketDto> purchases;

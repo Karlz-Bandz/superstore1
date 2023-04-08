@@ -4,10 +4,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.superstore.superstore.dto.BucketDto;
+import pl.superstore.superstore.dto.ID_Dto;
 import pl.superstore.superstore.dto.ProductMenu;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.services.ProductService;
@@ -38,5 +37,18 @@ public class ProductController
     public ResponseEntity<List<ProductMenu>> getPage(@PathVariable int number)
     {
         return new ResponseEntity<>(productService.getOnePage(number), HttpStatus.OK);
+    }
+
+    @PostMapping("/basket/add")
+    public ResponseEntity<Void> addToBucket(@RequestBody ID_Dto id_Dto)
+    {
+        productService.addToBucket(id_Dto.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/basket/show")
+    public ResponseEntity<List<BucketDto>> showBucket()
+    {
+        return new ResponseEntity<>(productService.showBucket(),HttpStatus.OK);
     }
 }

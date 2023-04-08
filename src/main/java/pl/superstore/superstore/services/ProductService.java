@@ -31,7 +31,7 @@ public class ProductService implements Producer
     @Autowired
     private ProductRepo productRepo;
 
-    private Bucket bucket;
+    private Bucket bucket = new Bucket();
 
     @Override
     public int showTheNumberOfBucketItems()
