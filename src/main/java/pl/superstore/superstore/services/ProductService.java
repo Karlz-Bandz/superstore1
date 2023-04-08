@@ -5,20 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ProductMenu;
 import pl.superstore.superstore.interfaces.Producer;
-import pl.superstore.superstore.models.Bucket;
+import pl.superstore.superstore.models.Basket;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.repos.ProductRepo;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * <strong>ProductService</strong> class<br>
- * This class manages all logic of {@link Bucket} and {@link Product}
+ * This class manages all logic of {@link Basket} and {@link Product}
  * <br>
  * @author Karol Melak
  * @since 1.0
@@ -29,40 +27,7 @@ import java.util.List;
 public class ProductService implements Producer
 {
     @Autowired
-    private ProductRepo productRepo;
-
-    private Bucket bucket;
-
-    @Override
-    public int showTheNumberOfBucketItems()
-    {
-        return bucket.getNumberOfItems();
-    }
-
-    @Override
-    public BigDecimal showBucketAmount()
-    {
-        return bucket.getAmount();
-    }
-
-    @Override
-    public List<BucketDto> showBucket()
-    {
-        return bucket.getPurchases();
-    }
-
-    @Override
-    public void addToBucket(long id)
-    {
-        Product chosenProduct = productRepo.findById(id).orElse(new Product());
-        bucket.addNewItem(chosenProduct);
-    }
-
-    @Override
-    public void removeFromBucket(int index)
-    {
-        bucket.removeItem(index);
-    }
+    protected ProductRepo productRepo;
 
     @Override
     @Transactional
@@ -120,6 +85,12 @@ public class ProductService implements Producer
     {
         Product product = productRepo.findById(id).orElse(new Product());
         return product;
+    }
+
+    @Override
+    public int getNumberOfProducts()
+    {
+        return productRepo.getNumberOfProducts();
     }
 
     @Override

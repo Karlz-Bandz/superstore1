@@ -27,7 +27,7 @@ public class Product
     private long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String description;
     @Enumerated(EnumType.ORDINAL)
     private Category category;

@@ -10,16 +10,6 @@ import java.util.Optional;
 
 public interface Producer
 {
-     int showTheNumberOfBucketItems();
-
-     BigDecimal showBucketAmount();
-
-     List<BucketDto> showBucket();
-
-     void addToBucket(long id);
-
-     void removeFromBucket(int index);
-
      int addNewProduct(Product product);
 
      int removeProduct(long id);
@@ -27,6 +17,8 @@ public interface Producer
      List<ProductMenu> getOnePage(int number);
 
      Product getById(long id);
+
+     int getNumberOfProducts();
 
      List<Product> getAll();
 }
