@@ -23,7 +23,7 @@ public class SecurityConfiguration
                 .formLogin().disable()
                 .securityMatcher("/**")
                 .authorizeHttpRequests(resgistry -> resgistry
-                                .requestMatchers("/product/**", "/user/**").permitAll()
+                                .requestMatchers("/product/**", "/user/**", "/basket/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                                  );

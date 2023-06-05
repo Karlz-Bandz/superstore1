@@ -1,8 +1,7 @@
 package pl.superstore.superstore.controllers;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductController
 {
-    @Autowired
+
     private ProductService productService;
 
-    @Autowired
     private BasketService basketService;
 
     @GetMapping("/sum")
