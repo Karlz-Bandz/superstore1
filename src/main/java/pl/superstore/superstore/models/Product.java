@@ -1,10 +1,7 @@
 package pl.superstore.superstore.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -19,6 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class Product
 {
     @Id

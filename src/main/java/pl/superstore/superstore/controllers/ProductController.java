@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.superstore.superstore.dto.BucketDto;
 import pl.superstore.superstore.dto.ID_Dto;
+import pl.superstore.superstore.dto.ProductDto;
 import pl.superstore.superstore.dto.ProductMenu;
 import pl.superstore.superstore.models.Product;
 import pl.superstore.superstore.services.BasketService;
@@ -24,6 +25,23 @@ public class ProductController
     private ProductService productService;
 
     private BasketService basketService;
+
+    @PostMapping("/add")
+    public ResponseEntity<Void> addProduct(@RequestBody ProductDto productDto)
+    {
+        Product product = Product.builder()
+                .name(productDto.getName())
+                .price(productDto.getPrice())
+                .description(productDto.getDescription())
+                .imageUrl(productDto.getImageUrl())
+                .category(productDto.getCategory())
+                .build();
+
+        productService.addNewProduct(product);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 
     @GetMapping("/sum")
     public ResponseEntity<Integer> getSum()
